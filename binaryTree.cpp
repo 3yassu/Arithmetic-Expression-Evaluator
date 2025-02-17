@@ -16,7 +16,7 @@ template <typename T>
 class BinaryExpressionTree{
     private:
         BinaryNode<T>* root;
-    void sortExpression(BinaryNode<T> currentNode){
+    void sortExpression(BinaryNode<T>* currentNode){
         T entry = currentNode.entry;
         int parenthCheck = 1;
         int entryLength = entry.length();
@@ -30,34 +30,43 @@ class BinaryExpressionTree{
             left = entry.substr(1, j - 1);
             right = entry.substr(j + 2, entryLength - 2);  
             if(j < entryLength - 1){
-                currentNode.entry = x[j + 1];
-                currentNode.left-> new BinaryNode(left); sortExpression(currentNode.left);
-                currentNode.right-> new BinaryNode(right); sortExpression(currentNode.right);
+                currentNode->entry = x[j + 1];
+                currentNode->left = new BinaryNode<T>(left); sortExpression(currentNode.left);
+                currentNode->right = new BinaryNode<T>(right); sortExpression(currentNode.right);
             }
             else{
-                currentNode.entry = entry.substr(1, j - 1);
-                sortExpression(currentNode);
+                currentNode.entry = entry.substr(1, j - 1); sortExpression(currentNode);
             }
         }else{
             set<char> operators {'+', '-', '*', '/', '^'};
             for(;j < entryLength; j++){
-                if(operators.find(entry[j]) != operators.end()){
+                if(operators.find(entry[j]) != operators.end() && j > 0){
                     left = entry.substr(0, j - 1);
-                    right = entry.substr(j + 1, entryLength - 1);
-                    break; 
+                    right = entry.substr(j + 1);
+                    currentNode->left = new BinaryNode<T>(left);
+                    currentNode->right = new BinaryNode<T>(right);
+                    currentNode->entry = entry[j];
+                    break;
                 }
             }
-            currentNode.entry = entry[j];
-            currentNode.left-> new BinaryNode(left);
-            currentNode.right-> new BinaryNode(right);
         }
     }
-    float evaluator(BinaryNode<T> currentNode, float (*f)(string, string)){
+    
+    float evaluator(BinaryNode<T>* currentNode){
         set<char> operators {'+', '-', '*', '/', '^'};
-        if(operators.find(currentNode.entry) != operators.end()){
-            return stof(currentNode.entry);
+        if(operators.find(currentNode->entry) == operators.end()){
+            return stof(currentNode->entry);
         }else{
-            left =  
+            left = evaluator(currentNode->left);
+            right = evaluator(currentNode->right);
+            char operator = currentNode->entry[0];
+            switch(operator){
+                switch('+'): return(left + right);
+                switch('-'): return(left - right);
+                switch('*'): return(left * right);
+                switch('/'): return(left / right);
+                switch('^'): for(int i = 0; int i < right;i++){left *= left}return(left);
+            }
         }
     }
 };
