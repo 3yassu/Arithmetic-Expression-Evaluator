@@ -30,7 +30,7 @@ class BinaryExpressionTree{
             left = entry.substr(1, j - 1);
             right = entry.substr(j + 2, entryLength - 2);  
             if(j < entryLength - 1){
-                currentNode->entry = x[j + 1];
+                currentNode->entry = entry[j + 1];
                 currentNode->left = new BinaryNode<T>(left); sortExpression(currentNode.left);
                 currentNode->right = new BinaryNode<T>(right); sortExpression(currentNode.right);
             }
@@ -59,13 +59,13 @@ class BinaryExpressionTree{
         }else{
             left = evaluator(currentNode->left);
             right = evaluator(currentNode->right);
-            char operator = currentNode->entry[0];
-            switch(operator){
-                switch('+'): return(left + right);
-                switch('-'): return(left - right);
-                switch('*'): return(left * right);
-                switch('/'): return(left / right);
-                switch('^'): for(int i = 0; int i < right;i++){left *= left}return(left);
+            char oper = currentNode->entry[0];
+            switch(oper){
+                case('+'): return(left + right);
+                case('-'): return(left - right);
+                case('*'): return(left * right);
+                case('/'): return(left / right);
+                case('^'): for(int i = 0; int i < right;i++){left *= left}return(left);
             }
         }
     }
