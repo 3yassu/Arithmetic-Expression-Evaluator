@@ -25,12 +25,13 @@ class BinaryExpressionTree{
             float left = evaluator(currentNode->left);
             float right = evaluator(currentNode->right);
             char oper = currentNode->entry[0];
+            float power = 1;
             switch(oper){
                 case('+'): return(left + right);
                 case('-'): return(left - right);
                 case('*'): return(left * right);
                 case('/'): return(left / right);
-                case('^'): for(int i = 0; i < right; i++){left *= left;}return(left);
+                case('^'): for(int i = 0; i < right; ++i){power *= left;}return(power);
             }
         }
     }
