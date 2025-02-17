@@ -18,16 +18,16 @@ class BinaryExpressionTree{
 
         void sortExpression(BinaryNode<T>* currentNode){
             T entry = currentNode->entry; int entrySize = entry.size();
-            vector<char> equation {}; parenthCheck = 0;
+            vector<char> equation {}; int parenthCheck = 0;
             vector<char> operand = {};
             for(int j = 0; j < entrySize; j++){
-                entryJ = entry[j];
+                char entryJ = entry[j];
                 if(entryJ == '('){parenthCheck++;}
                 else if(entryJ == ')'){parenthCheck--;}
                 operand.push_back(entryJ);
                 if(parenthCheck == 0 && j != (entrySize - 1)){equation.push_back(operand); operand = {};}
             }
-            equationSize = equation.size(); int prec = 0;
+            int equationSize = equation.size(); int prec = 0;
             for(int j = 0; j < equationSize; j++){
                 if(isOperator(equation[j][0])){
                     if(precedence(equation[j][0]) == 1){
@@ -43,8 +43,8 @@ class BinaryExpressionTree{
                 else if(lower == 0){left.push_back(equation[j]);}
                 else if(lower == 1){right.push_back(equation[j]);}
             }
-            currentNode->left = left; sortExpression(currentNode->left);
-            currentNode->right = right; sortExpression(currentNode->right);
+            currentNode->left = new BinaryNode<T>(left); sortExpression(currentNode->left);
+            currentNode->right = new BinaryNode<T>(right); sortExpression(currentNode->right);
         }
         int precedence(char oper){
             if(oper == '^'){
