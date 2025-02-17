@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <regex>
 using namespace std;
 
 template <typename T>
@@ -17,15 +16,22 @@ class BinaryExpressionTree{
     private:
         BinaryNode<T>* root;
     void sortExpression(BinaryNode<T> currentNode){
-        T entry = currentNode.entry
-        int parenthCheck = 1
-        int entryLength = entry.length()
-        
-        std::regex patten(R"(.+[+-*^.])")
-        currentNode.left->BinaryNode(left)
-        currentNode.right->BinaryNode(right)
     }
-    float evaluator(T x){
-
+    float evaluator(BinaryNode<T>* currentNode){
+        set<char> operators {'+', '-', '*', '/', '^'};
+        if(operators.find(currentNode->entry) == operators.end()){
+            return stof(currentNode->entry);
+        }else{
+            float left = evaluator(currentNode->left);
+            float right = evaluator(currentNode->right);
+            char oper = currentNode->entry[0];
+            switch(oper){
+                case('+'): return(left + right);
+                case('-'): return(left - right);
+                case('*'): return(left * right);
+                case('/'): return(left / right);
+                case('^'): for(int i = 0; i < right; i++){left *= left;}return(left);
+            }
+        }
     }
 };
