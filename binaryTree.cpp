@@ -17,7 +17,23 @@ class BinaryExpressionTree{
         BinaryNode<T>* root;
 
         void sortExpression(BinaryNode<T> currentNode){
-
+            T entry = currentNode->entry; int entrySize = entry.size();
+            vector<T> equation; parenthCheck = 0;
+            vector<char> operand = {};
+            for(int j = 0; j < entrySize; j++){
+                entryJ = entry[j];
+                if(parenthCheck == 0 && j != (entrySize - 1)){equation.push_back(operand); operand = {};}
+                if(entryJ == '('){parenthCheck++;}
+                else if(entryJ == ')'){parenthCheck--;}
+                operand.push_back(entryJ);
+            }
+            for(int j = i; j < entrySize; j++){
+                entryJ = entry[j];
+                if(parenthCheck == 0 && j != (entrySize - 1)){equation.push_back(operand); operand = {};}
+                if(entryJ == '('){parenthCheck++;}
+                else if(entryJ == ')'){parenthCheck--;}
+                operand.push_back(entryJ);
+            }
         }
         int precedence(char oper){
             if(oper == '^'){
@@ -51,5 +67,5 @@ class BinaryExpressionTree{
         }
     public:
         string equation;
-        BinaryExpressionTree(string x) : equation(x) {}
+        BinaryExpressionTree(vector<char> x) : equation(x) {}
 };
