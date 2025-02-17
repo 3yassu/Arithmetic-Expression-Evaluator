@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <set>
 using namespace std;
 
 template <typename T>
@@ -15,33 +16,48 @@ template <typename T>
 class BinaryExpressionTree{
     private:
         BinaryNode<T>* root;
-    void addExpression(T x, BinaryNode<T> currentNode){
-        int parenthCheck = 1
-        int xLength = x.length()
-        if(x[0] == '('){
-            int j = 1;
-            for(;(j < xLength) && (parenthCheck == 0); j++){
-                if(x[j] == '('){
-                    parenthCheck++;
-                }
-                else if(x[j] == ')'){
-                    parenthCheck--;
-                }
+    void sortExpression(BinaryNode<T> currentNode){
+        T entry = currentNode.entry;
+        int parenthCheck = 1;
+        int entryLength = entry.length();
+        int j = 1;
+        string left; string right;
+        if(entry[0] == '('){
+            for(;(j < entryLength) && (parenthCheck > 0); j++){
+                if(entry[j] == '(') parenthCheck++;
+                else if(entry[j] == ')')parenthCheck--;
             }
-            string left = x.substr(1, j);
-            string right = x.substr(j + 3, xLength - 2);
-            if(j < x.length() - 1){
+            left = entry.substr(1, j - 1);
+            right = entry.substr(j + 2, entryLength - 2);  
+            if(j < entryLength - 1){
                 currentNode.entry = x[j + 1];
-                currentNode.left->BinaryNode(left); addExpression(left, currentNode.left);
-                currentNode.right->BinaryNode(right); addExpression(right, currentNode.right);
+                currentNode.left-> new BinaryNode(left); sortExpression(currentNode.left);
+                currentNode.right-> new BinaryNode(right); sortExpression(currentNode.right);
             }
             else{
-
+                currentNode.entry = entry.substr(1, j - 1);
+                sortExpression(currentNode);
             }
+        }else{
+            set<char> operators {'+', '-', '*', '/', '^'};
+            for(;j < entryLength; j++){
+                if(operators.find(entry[j]) != operators.end()){
+                    left = entry.substr(0, j - 1);
+                    right = entry.substr(j + 1, entryLength - 1);
+                    break; 
+                }
+            }
+            currentNode.entry = entry[j];
+            currentNode.left-> new BinaryNode(left);
+            currentNode.right-> new BinaryNode(right);
         }
-        addExpression(x, i+1, currentNode.left);
     }
-    float evaluator(T x){
-
+    float evaluator(BinaryNode<T> currentNode, float (*f)(string, string)){
+        set<char> operators {'+', '-', '*', '/', '^'};
+        if(operators.find(currentNode.entry) != operators.end()){
+            return stof(currentNode.entry);
+        }else{
+            left =  
+        }
     }
 };
