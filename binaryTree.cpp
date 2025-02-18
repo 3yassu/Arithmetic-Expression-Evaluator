@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <string>
 using namespace std;
 
 template <typename T>
@@ -18,14 +19,14 @@ class BinaryExpressionTree{
 
         void sortExpression(BinaryNode<T>* currentNode){
             T entry = currentNode->entry; int entrySize = entry.size();
-            vector<char> equation {}; int parenthCheck = 0;
-            vector<char> operand = {};
+            string equation {}; int parenthCheck = 0;
+            string operand = {};
             for(int j = 0; j < entrySize; j++){
                 char entryJ = entry[j];
                 if(entryJ == '('){parenthCheck++;}
                 else if(entryJ == ')'){parenthCheck--;}
-                operand.push_back(entryJ);
-                if(parenthCheck == 0 && j != (entrySize - 1)){equation.push_back(operand); operand = {};}
+                operand += entryJ;
+                if(parenthCheck == 0 && j != (entrySize - 1)){equation += operand; operand = {};}
             }
             int equationSize = equation.size(); int prec = 0;
             for(int j = 0; j < equationSize; j++){
@@ -37,12 +38,8 @@ class BinaryExpressionTree{
                     }
                 }
             }
-            int lower = 0; vector<char> left = {}; vector<char> right = {};
-            for(int j = 0; j < equationSize; j++){
-                if(j == prec){lower = 1;}
-                else if(lower == 0){left.push_back(equation[j]);}
-                else if(lower == 1){right.push_back(equation[j]);}
-            }
+            string left = equation.substr(0, prec - 1);
+            string right = equation.substr(prec + 1);
             currentNode->left = new BinaryNode<T>(left); sortExpression(currentNode->left);
             currentNode->right = new BinaryNode<T>(right); sortExpression(currentNode->right);
         }
@@ -59,7 +56,7 @@ class BinaryExpressionTree{
         }
         bool isOperator(char object){return (object == '+' || object == '-' || object == '*' || object == '/' || object == '^' || object == '%' );}
         float evaluator(BinaryNode<T>* currentNode){
-            if(!(isOperator(currentNode->entry))){
+            if(!(isOperator(currentNode->entry[0]))){
                 return stof(currentNode->entry);
             }else{
                 float left = evaluator(currentNode->left);
@@ -67,16 +64,16 @@ class BinaryExpressionTree{
                 char oper = currentNode->entry[0];
                 float power = 1;
                 switch(oper){
-                    case('+'): return(left + right);
-                    case('-'): return(left - right);
-                    case('*'): return(left * right);
-                    case('/'): return(left / right);
-                    case('^'): for(int i = 0; i < right; ++i){power *= left;}return(power);
-                    case('%'): return(left % right);
+                    case '+': return(left + right);
+                    case '-': return(left - right);
+                    case '*': return(left * right);
+                    case '/': return(left / right);
+                    case '^': for(int i = 0; i < right; ++i){power *= left;}return(power);
+                    case '%': return(left % right);
                 }
             }
         }
     public:
-        vector<char> equation;
-        BinaryExpressionTree(vector<char> x) : equation(x) {}
+        string equation;
+        BinaryExpressionTree(string x) : equation(x) {}
 };
