@@ -15,8 +15,6 @@ class BinaryNode{
 template <typename T>
 class BinaryExpressionTree{
     private:
-        BinaryNode<T>* root;
-
         void sortExpression(BinaryNode<T>* currentNode){
             T entry = currentNode->entry; int entrySize = entry.size();
             vector<string> equation {}; int parenthCheck = 0;
@@ -80,5 +78,5 @@ class BinaryExpressionTree{
         }
     public:
         string equation;
-        BinaryExpressionTree(string x) : equation(x) {}
+        BinaryExpressionTree(string x) : equation(x) {root = new BinaryNode<T>(x); sortExpression(root);}
 };
