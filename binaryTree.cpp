@@ -15,6 +15,7 @@ class BinaryNode{
 template <typename T>
 class BinaryExpressionTree{
     private:
+        BinaryNode<T>* root;
         void sortExpression(BinaryNode<T>* currentNode){
             T entry = currentNode->entry; int entrySize = entry.size();
             vector<string> equation {}; int parenthCheck = 0;
@@ -24,7 +25,7 @@ class BinaryExpressionTree{
                 if(entryJ == '('){parenthCheck++;}
                 else if(entryJ == ')'){parenthCheck--;}
                 operand += entryJ;
-                if(parenthCheck == 0 && j != (entrySize - 1)){equation.push_back(operand); operand.clear;}
+                if(parenthCheck == 0 && j != (entrySize - 1)){equation.push_back(operand); operand.clear();}
             }
             int equationSize = equation.size(); int prec = -1;
             for(int j = 0; j < equationSize; j++){
@@ -36,8 +37,8 @@ class BinaryExpressionTree{
                     }
                 }
             }
-            if(prec = -1) return; 
-            string left = ""; string right = "";
+            if(prec == -1) return; 
+            string left = ""; string right = ""; int lower = 0;
             for(int j = 0; j < equationSize; j++){
                 if(j == prec){lower = 1;}
                 else if(lower == 0){left += equation[j];}
@@ -79,4 +80,5 @@ class BinaryExpressionTree{
     public:
         string equation;
         BinaryExpressionTree(string x) : equation(x) {root = new BinaryNode<T>(x); sortExpression(root);}
+        float evaluate() {return evaluator(root);}
 };
