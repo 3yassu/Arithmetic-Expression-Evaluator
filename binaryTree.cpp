@@ -45,8 +45,6 @@ class BinaryExpressionTree{
                 else if(lower == 0){left += equation[j];}
                 else if(lower == 1){right += equation[j];}
             }
-            string left = equation.substr(0, prec);
-            string right = equation.substr(prec + 1);
             currentNode->left = new BinaryNode<T>(left); sortExpression(currentNode->left);
             currentNode->right = new BinaryNode<T>(right); sortExpression(currentNode->right);
         }
