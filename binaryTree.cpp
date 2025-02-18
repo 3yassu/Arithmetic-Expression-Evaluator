@@ -22,11 +22,17 @@ class BinaryExpressionTree{
             string operand = "";
             for(int j = 0; j < entrySize; j++){
                 char entryJ = entry[j];
-                if(entryJ == '('){parenthCheck++;}
-                else if(entryJ == ')'){parenthCheck--;}
-                operand += entryJ;
-                if(parenthCheck == 0 && j != (entrySize - 1)){equation.push_back(operand); operand.clear();}
+                if(entryJ == '('){
+                    if(parenthCheck != 0){operand += entryJ;}
+                    parenthCheck++;
+                }
+                else if(entryJ == ')'){
+                    if(parenthCheck != 1){operand += entryJ;}
+                    parenthCheck--;
+                }else{operand += entryJ;}
+                if(parenthCheck == 0){equation.push_back(operand); operand.clear();}
             }
+            
             int equationSize = equation.size(); int prec = -1;
             for(int j = 0; j < equationSize; j++){
                 if(isOperator(equation[j][0])){
@@ -37,7 +43,8 @@ class BinaryExpressionTree{
                     }
                 }
             }
-            if(prec == -1) return; 
+            if(prec == -1) return;
+            currentNode->entry = equation[prec];
             string left = ""; string right = ""; int lower = 0;
             for(int j = 0; j < equationSize; j++){
                 if(j == prec){lower = 1;}
@@ -76,6 +83,7 @@ class BinaryExpressionTree{
                     case '%': return(left % right);
                 }
             }
+            return 0;
         }
     public:
         string equation;
