@@ -19,26 +19,33 @@ class BinaryExpressionTree{
 
         void sortExpression(BinaryNode<T>* currentNode){
             T entry = currentNode->entry; int entrySize = entry.size();
-            string equation {}; int parenthCheck = 0;
-            string operand = {};
+            vector<string> equation {}; int parenthCheck = 0;
+            string operand = "";
             for(int j = 0; j < entrySize; j++){
                 char entryJ = entry[j];
                 if(entryJ == '('){parenthCheck++;}
                 else if(entryJ == ')'){parenthCheck--;}
                 operand += entryJ;
-                if(parenthCheck == 0 && j != (entrySize - 1)){equation += operand; operand = {};}
+                if(parenthCheck == 0 && j != (entrySize - 1)){equation.push_back(operand); operand.clear;}
             }
-            int equationSize = equation.size(); int prec = 0;
+            int equationSize = equation.size(); int prec = -1;
             for(int j = 0; j < equationSize; j++){
                 if(isOperator(equation[j][0])){
                     if(precedence(equation[j][0]) == 1){
                         prec = j; break;
-                    }else if(prec == 0 || precedence(equation[j][0]) < precedence(equation[prec][0])){
+                    }else if(precedence(equation[j][0]) < precedence(equation[prec][0])){
                         prec = j;
                     }
                 }
             }
-            string left = equation.substr(0, prec - 1);
+            if(prec = -1) return; 
+            string left = ""; string right = "";
+            for(int j = 0; j < equationSize; j++){
+                if(j == prec){lower = 1;}
+                else if(lower == 0){left += equation[j];}
+                else if(lower == 1){right += equation[j];}
+            }
+            string left = equation.substr(0, prec);
             string right = equation.substr(prec + 1);
             currentNode->left = new BinaryNode<T>(left); sortExpression(currentNode->left);
             currentNode->right = new BinaryNode<T>(right); sortExpression(currentNode->right);
