@@ -33,17 +33,17 @@ class BinaryExpressionTree{
                 if(parenthCheck == 0){equation.push_back(operand); operand.clear();}
             }
             
-            int equationSize = equation.size(); int prec = -1;
+            int equationSize = equation.size(); int prec = 0;
             for(int j = 0; j < equationSize; j++){
-                if(isOperator(equation[j][0])){
-                    if(precedence(equation[j][0]) == 1){
+                char currentEqu = equation[j][0]; char precedenceEqu = equation[prec][0];
+                if(isOperator(currentEqu)){
+                    if(precedence(currentEqu) == 1){
                         prec = j; break;
-                    }else if(precedence(equation[j][0]) < precedence(equation[prec][0])){
+                    }else if(precedence(currentEqu) < precedence(precedenceEqu)){
                         prec = j;
                     }
                 }
             }
-            if(prec == -1) return;
             currentNode->entry = equation[prec];
             string left = ""; string right = ""; int lower = 0;
             for(int j = 0; j < equationSize; j++){
