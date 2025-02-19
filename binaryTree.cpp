@@ -18,7 +18,7 @@ class BinaryExpressionTree{
         BinaryNode<T>* root;
         void sortExpression(BinaryNode<T>* currentNode){
             T entry = currentNode->entry; int entrySize = entry.size();
-            if(entrySize == 1) return;
+            if(isdigit(entry[0]) || ((entry[0] == '+' || entry[0] == '-') && isdigit(entry[1]))){return;}
             vector<string> equation {}; int parenthCheck = 0;
             string operand = "";
             for(int j = 0; j < entrySize; j++){
@@ -35,25 +35,33 @@ class BinaryExpressionTree{
             }
             
             int equationSize = equation.size(); int prec = 0;
-            for(int j = 0; j < equationSize; j++){
-                char currentEqu = equation[j][0]; char precedenceEqu = equation[prec][0];
-                if(isOperator(currentEqu)){
-                    if(precedence(currentEqu) == 1){
-                        prec = j; break;
-                    }else if(precedence(currentEqu) < precedence(precedenceEqu)){
-                        prec = j;
+            if(equationSize == 1){
+                currentNode->entry = equation[0];
+                sortExpression(currentNode);
+            }else{
+                for(int j = 0; j < equationSize; j++){
+                    char currentEqu = equation[j][0]; char precedenceEqu = equation[prec][0];
+                    if(isOperator(currentEqu)){
+                        if(precedence(currentEqu) == 1){
+                            prec = j; break;
+                        }else if(precedence(currentEqu) < precedence(precedenceEqu)){
+                            prec = j;
+                        }
                     }
                 }
+                if equationSize
+                currentNode->entry = equation[prec];
+                string left = ""; string right = ""; int lower = 0;
+                for(int j = 0; j < equationSize; j++){
+                    int jSize = equation[j].size(); 
+                    if(jSize > 1){equation[j] = '(' + equation[j] + ')';}
+                    if(j == prec){lower = 1;}
+                    else if(lower == 0){left += equation[j];}
+                    else if(lower == 1){right += equation[j];}
+                }
+                currentNode->left = new BinaryNode<T>(left); sortExpression(currentNode->left);
+                currentNode->right = new BinaryNode<T>(right); sortExpression(currentNode->right);
             }
-            currentNode->entry = equation[prec];
-            string left = ""; string right = ""; int lower = 0;
-            for(int j = 0; j < equationSize; j++){
-                if(j == prec){lower = 1;}
-                else if(lower == 0){left += equation[j];}
-                else if(lower == 1){right += equation[j];}
-            }
-            currentNode->left = new BinaryNode<T>(left); sortExpression(currentNode->left);
-            currentNode->right = new BinaryNode<T>(right); sortExpression(currentNode->right);
         }
         int precedence(char oper){
             if(oper == '^'){
@@ -63,7 +71,7 @@ class BinaryExpressionTree{
             }else if(oper == '+' || oper == '-'){
                 return 1;
             }else{
-                throw runtime_error("Not a valid operator!");
+                return 5;
             }  
         }
         bool isOperator(char object){return (object == '+' || object == '-' || object == '*' || object == '/' || object == '^' || object == '%' );}
