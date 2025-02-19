@@ -18,6 +18,7 @@ class BinaryExpressionTree{
         BinaryNode<T>* root;
         void sortExpression(BinaryNode<T>* currentNode){
             T entry = currentNode->entry; int entrySize = entry.size();
+            if(entrySize == 1) return;
             vector<string> equation {}; int parenthCheck = 0;
             string operand = "";
             for(int j = 0; j < entrySize; j++){
