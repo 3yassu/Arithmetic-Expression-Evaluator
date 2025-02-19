@@ -17,9 +17,11 @@ class BinaryExpressionTree{
     private:
         BinaryNode<T>* root;
         void sortExpression(BinaryNode<T>* currentNode){
-            T entry = currentNode->entry; int entrySize = entry.size();
+            T entry = currentNode->entry; int unary = 0;
             if(isNum(entry)){return;}
-            vector<string> equation {}; int parenthCheck = 0;
+            if(entry[0] == '+'){entry.erase(0, 1);}
+            else if(entry[0] == '-'){entry.erase(0, 1); unary = 1;}
+            vector<string> equation {}; int parenthCheck = 0; int entrySize = entry.size();
             string operand = "";
             for(int j = 0; j < entrySize; j++){
                 char entryJ = entry[j];
@@ -33,7 +35,8 @@ class BinaryExpressionTree{
                 }else{operand += entryJ;}
                 if(parenthCheck == 0){equation.push_back(operand); operand.clear();}
             }
-            
+            if(unary == 1){equation[0] = "(-1)*(" + equation[0] + ")";}
+
             int equationSize = equation.size(); int prec = 0;
             if(equationSize == 1){
                 currentNode->entry = equation[0];
@@ -43,7 +46,7 @@ class BinaryExpressionTree{
                 for(int j = 0; j < equationSize; j++){
                     char currentEqu = equation[j][0]; char precedenceEqu = equation[prec][0];
                     if(isOperator(currentEqu) && !isNum(equation[j])){
-                        if(precCheck == 0){prec = j;}
+                        if(precCheck == 0){prec = j; precCheck++;}
                         else if(precedence(currentEqu) == 1){
                             prec = j; break;
                         }else if(precedence(currentEqu) < precedence(precedenceEqu)){
@@ -70,12 +73,12 @@ class BinaryExpressionTree{
                 int numbSize = numb.size();
                 if(numbSize == 1){return false;}
                 for(int i = 1; i < numb.size(); i++){
-                    if((!isdigit(numb[i]) && decimalPoint == 1) || isOperator(numb[i])){return false;}
+                    if((!isdigit(numb[i]) && decimalPoint == 1) || isOperator(numb[i]) || numb[i] == '(' || numb[i] == ')'){return false;}
                     if(numb[i] == '.'){decimalPoint++;}
                 }
             }else{
                 for(char x : numb){
-                    if((!isdigit(x) && decimalPoint == 1) || isOperator(x)){return false;}
+                    if((!isdigit(x) && decimalPoint == 1) || isOperator(x) || x == '(' || x == ')'){return false;}
                     else if(x == '.'){decimalPoint++;}
                 }
             }
