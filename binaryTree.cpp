@@ -18,7 +18,7 @@ class BinaryExpressionTree{
         BinaryNode<T>* root;
         void sortExpression(BinaryNode<T>* currentNode){
             T entry = currentNode->entry; int entrySize = entry.size();
-            if(isdigit(entry[0]) || ((entry[0] == '+' || entry[0] == '-') && isdigit(entry[1]))){return;}
+            if(isNum(entry)){return;}
             vector<string> equation {}; int parenthCheck = 0;
             string operand = "";
             for(int j = 0; j < entrySize; j++){
@@ -49,7 +49,6 @@ class BinaryExpressionTree{
                         }
                     }
                 }
-                if equationSize
                 currentNode->entry = equation[prec];
                 string left = ""; string right = ""; int lower = 0;
                 for(int j = 0; j < equationSize; j++){
@@ -62,6 +61,21 @@ class BinaryExpressionTree{
                 currentNode->left = new BinaryNode<T>(left); sortExpression(currentNode->left);
                 currentNode->right = new BinaryNode<T>(right); sortExpression(currentNode->right);
             }
+        }
+        bool isNum(string numb){
+            int decimalPoint = 0;
+            if(numb[0] == '+' || numb[0] == '-'){
+                for(int i = 1; i < numb.size(); i++){
+                    if(!isdigit(numb[i]) && decimalPoint == 1){return false;}
+                    if(numb[i] == '.'){decimalPoint++;}
+                }
+            }else{
+                for(char x : numb){
+                    if(!isdigit(x) || decimalPoint == 1){return false;}
+                    else if(x == '.'){decimalPoint++;}
+                }
+            }
+            return true;
         }
         int precedence(char oper){
             if(oper == '^'){
