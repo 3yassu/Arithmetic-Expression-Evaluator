@@ -39,10 +39,12 @@ class BinaryExpressionTree{
                 currentNode->entry = equation[0];
                 sortExpression(currentNode);
             }else{
+                int precCheck = 0;
                 for(int j = 0; j < equationSize; j++){
                     char currentEqu = equation[j][0]; char precedenceEqu = equation[prec][0];
-                    if(isOperator(currentEqu)){
-                        if(precedence(currentEqu) == 1){
+                    if(isOperator(currentEqu) && !isNum(equation[j])){
+                        if(precCheck == 0){prec = j;}
+                        else if(precedence(currentEqu) == 1){
                             prec = j; break;
                         }else if(precedence(currentEqu) < precedence(precedenceEqu)){
                             prec = j;
@@ -65,13 +67,15 @@ class BinaryExpressionTree{
         bool isNum(string numb){
             int decimalPoint = 0;
             if(numb[0] == '+' || numb[0] == '-'){
+                int numbSize = numb.size();
+                if(numbSize == 1){return false;}
                 for(int i = 1; i < numb.size(); i++){
-                    if(!isdigit(numb[i]) && decimalPoint == 1){return false;}
+                    if((!isdigit(numb[i]) && decimalPoint == 1) || isOperator(numb[i])){return false;}
                     if(numb[i] == '.'){decimalPoint++;}
                 }
             }else{
                 for(char x : numb){
-                    if(!isdigit(x) || decimalPoint == 1){return false;}
+                    if((!isdigit(x) && decimalPoint == 1) || isOperator(x)){return false;}
                     else if(x == '.'){decimalPoint++;}
                 }
             }
@@ -90,7 +94,7 @@ class BinaryExpressionTree{
         }
         bool isOperator(char object){return (object == '+' || object == '-' || object == '*' || object == '/' || object == '^' || object == '%' );}
         float evaluator(BinaryNode<T>* currentNode){
-            if(!(isOperator(currentNode->entry[0]))){
+            if(isNum(currentNode->entry)){
                 return stof(currentNode->entry);
             }else{
                 float left = evaluator(currentNode->left);
@@ -103,7 +107,7 @@ class BinaryExpressionTree{
                     case '*': return(left * right);
                     case '/': return(left / right);
                     case '^': for(int i = 0; i < right; ++i){power *= left;}return(power);
-                    case '%': return(left % right);
+                    case '%': return((int)left % (int)right);
                 }
             }
             return 0;
