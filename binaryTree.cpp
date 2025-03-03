@@ -33,10 +33,10 @@ class BinaryExpressionTree{
                     if(parenthCheck != 1){operand += entryJ;}
                     parenthCheck--;
                 }else{operand += entryJ;}
-                if(parenthCheck == 0){equation.push_back(operand); operand.clear();}
+                if((j == entrySize - 1) || (parenthCheck == 0 && (isOperator(entry[j + 1]) || isOperator(entryJ)))){equation.push_back(operand); operand.clear();}
             }
-            if(unary == 1){equation[0] = "(-1)*(" + equation[0] + ")";}
-
+            if(unary == 1 && equation[1] != "^"){equation[0] = "(-1)*(" + equation[0] + ")";}
+            else if(unary == 1 && equation[1] == "^"){equation.insert(equation.begin(), "*"); equation.insert(equation.begin(), "-1");}
             int equationSize = equation.size(); int prec = 0;
             if(equationSize == 1){
                 currentNode->entry = equation[0];
@@ -45,20 +45,18 @@ class BinaryExpressionTree{
                 int precCheck = 0;
                 for(int j = 0; j < equationSize; j++){
                     char currentEqu = equation[j][0]; char precedenceEqu = equation[prec][0];
-                    if(isOperator(currentEqu) && !isNum(equation[j])){
-                        if(precCheck == 0){prec = j; precCheck++;}
-                        else if(precedence(currentEqu) == 1){
-                            prec = j; break;
-                        }else if(precedence(currentEqu) < precedence(precedenceEqu)){
-                            prec = j;
-                        }
+                    if(equation[j].size() > 1 || !isOperator(currentEqu)){continue;}
+                    else{
+                        if(currentEqu == '-' && (precedence(currentEqu) != precedence(precedenceEqu))){equation[j][0] = '+'; equation[j + 1] = "-" + equation[j + 1];}
+                        if(precCheck == 0){prec = j; precCheck++;
+                        }else if(precedence(currentEqu) < precedence(precedenceEqu)){prec = j;}
                     }
                 }
                 currentNode->entry = equation[prec];
                 string left = ""; string right = ""; int lower = 0;
                 for(int j = 0; j < equationSize; j++){
                     int jSize = equation[j].size(); 
-                    if(jSize > 1){equation[j] = '(' + equation[j] + ')';}
+                    if(jSize > 1 && !isNum(equation[j])){equation[j] = '(' + equation[j] + ')';}
                     if(j == prec){lower = 1;}
                     else if(lower == 0){left += equation[j];}
                     else if(lower == 1){right += equation[j];}
@@ -109,8 +107,13 @@ class BinaryExpressionTree{
                     case '-': return(left - right);
                     case '*': return(left * right);
                     case '/': return(left / right);
-                    case '^': for(int i = 0; i < right; ++i){power *= left;}return(power);
-                    case '%': return((int)left % (int)right);
+                    case '^': 
+                        if(right > 0){for(int i = 0; i < right; i++){power *= left;}return(power);}
+                        else{for(int i = 0; i > right; i--){power /= left;}return(power);}
+                    case '%': 
+                        float divisor = left / right;
+                        float mod = right*(divisor - int(divisor));
+                        return(mod);
                 }
             }
             return 0;
