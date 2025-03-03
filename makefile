@@ -4,7 +4,7 @@ CFLAGS= -c -Wall
 all: prog
 
 prog: main.o binaryTree.o
-	$(CC) main.o binaryTree.o -o prog -lm
+	$(CC) main.o binaryTree.o -o evaluator -lm
 
 main.o: main.cpp
 	$(CC) $(CFLAGS) main.cpp
