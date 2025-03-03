@@ -48,8 +48,8 @@ class BinaryExpressionTree{
                     char currentEqu = equation[j][0]; char precedenceEqu = equation[prec][0];
                     if(equation[j].size() > 1 || !isOperator(currentEqu)){continue;}
                     else{
-                        if(precCheck == 0){prec = j; precCheck++;
-                        }else if(precedence(currentEqu) < precedence(precedenceEqu)){prec = j;}
+                        if(precCheck == 0){prec = j; precCheck++;}
+                        else if(precedence(currentEqu) <= precedence(precedenceEqu)){prec = j;}
                     }
                 }
                 currentNode->entry = equation[prec];
