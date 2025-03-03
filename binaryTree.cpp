@@ -1,4 +1,3 @@
-#include "binaryTree.hpp"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -6,8 +5,20 @@
 using namespace std;
 
 template <typename T>
-void BinaryExpressionTree<T>::sortExpression(BinaryNode<T>* currentNode){
-            T entry = currentNode->entry; int unary = 0;
+class BinaryNode{
+    public:
+        T entry;
+        BinaryNode* left;
+        BinaryNode* right;
+    BinaryNode(T x) : entry(x), left(nullptr), right(nullptr) {}
+};
+
+template <typename T>
+class BinaryExpressionTree{
+    private:
+        BinaryNode<T>* root;
+        void sortExpression(BinaryNode<T>* currentNode){
+        T entry = currentNode->entry; int unary = 0;
             if(isNum(entry)){return;}
             if(entry[0] == '+'){entry.erase(0, 1);}
             else if(entry[0] == '-'){entry.erase(0, 1); unary = 1;}
@@ -54,8 +65,7 @@ void BinaryExpressionTree<T>::sortExpression(BinaryNode<T>* currentNode){
                 currentNode->right = new BinaryNode<T>(right); sortExpression(currentNode->right);
             }
         }
-template <typename T>
-bool BinaryExpressionTree<T>::isNum(string numb){
+        bool isNum(string numb){
             int decimalPoint = 0;
             if(numb[0] == '+' || numb[0] == '-'){
                 int numbSize = numb.size();
@@ -72,8 +82,7 @@ bool BinaryExpressionTree<T>::isNum(string numb){
             }
             return true;
         }
-template <typename T>
-int BinaryExpressionTree<T>::precedence(char oper){
+        int precedence(char oper){
             if(oper == '^'){
                 return 4;
             }else if(oper == '*' || oper == '/' || oper == '%'){
@@ -86,12 +95,8 @@ int BinaryExpressionTree<T>::precedence(char oper){
                 return 5;
             }  
         }
-template <typename T>
-bool BinaryExpressionTree<T>::isOperator(char object){return (object == '+' || object == '-' || object == '*' || object == '/' || object == '^' || object == '%' );}
-template <typename T>
-BinaryExpressionTree<T>::BinaryExpressionTree(string x) : equation(x) {root = new BinaryNode<T>(x); sortExpression(root);}
-template <typename T>
-float BinaryExpressionTree<T>::evaluator(BinaryNode<T>* currentNode){
+        bool isOperator(char object){return (object == '+' || object == '-' || object == '*' || object == '/' || object == '^' || object == '%' );}
+        float evaluator(BinaryNode<T>* currentNode){
             if(isNum(currentNode->entry)){
                 return stof(currentNode->entry);
             }else{
@@ -112,6 +117,8 @@ float BinaryExpressionTree<T>::evaluator(BinaryNode<T>* currentNode){
             }
             return 0;
         }
-template <typename T>
-float BinaryExpressionTree<T>::evaluate() {return evaluator(root);}
-template class BinaryExpressionTree<std::string>;
+    public:
+        string equation;
+        BinaryExpressionTree(string x) : equation(x) {root = new BinaryNode<T>(x); sortExpression(root);}
+        float evaluate() {return evaluator(root);}
+};
