@@ -78,9 +78,9 @@ int BinaryExpressionTree<T>::precedence(char oper){
                 return 4;
             }else if(oper == '*' || oper == '/' || oper == '%'){
                 return 3;
-            }else if(oper == '+'){
-                return 2;
             }else if(oper == '-'){
+                return 2;
+            }else if(oper == '+'){
                 return 1;
             }else{
                 return 5;
