@@ -57,7 +57,7 @@ class BinaryExpressionTree{
                 string left = ""; string right = ""; int lower = 0;
                 for(int j = 0; j < equationSize; j++){
                     int jSize = equation[j].size(); 
-                    if(jSize > 1 && !isNum(equation[j])){equation[j] = '(' + equation[j] + ')';}
+                    if(jSize > 1){equation[j] = '(' + equation[j] + ')';}
                     if(j == prec){lower = 1;}
                     else if(lower == 0){left += equation[j];}
                     else if(lower == 1){right += equation[j];}
