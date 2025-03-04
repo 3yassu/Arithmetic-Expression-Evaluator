@@ -10,7 +10,7 @@ int main(){
     cout << "Enter Arithmetic Equation: ";
     cin >> equation;
     BinaryExpressionTree<string> expressionTree(equation);
-    float answer = expressionTree.evaluate();
+    double answer = expressionTree.evaluate();
     cout << "Result: " << answer << endl; 
     return 0;
 }

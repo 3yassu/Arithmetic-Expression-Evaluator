@@ -34,7 +34,8 @@ class BinaryExpressionTree{
                     if(parenthCheck != 1){operand += entryJ;}
                     parenthCheck--;
                 }else{operand += entryJ;}
-                if((j == entrySize - 1) || (parenthCheck == 0 && (isOperator(entry[j + 1]) || (isOperator(entryJ) && !isOperator(entry[j - 1]))))){equation.push_back(operand); operand.clear();}
+                if(j == 0 && isOperator(entryJ)){continue;}
+                if((j == entrySize - 1) || (parenthCheck == 0 && ((!isOperator(entryJ) && isOperator(entry[j + 1])) || (!isOperator(entry[j + 1]) && isOperator(entryJ) && !isOperator(entry[j - 1]))))){equation.push_back(operand); operand.clear();}
             }
             if(unary == 1 && equation[1] != "^"){equation[0] = "(-1)*(" + equation[0] + ")";}
             else if(unary == 1 && equation[1] == "^"){equation.insert(equation.begin(), "*"); equation.insert(equation.begin(), "-1");}
@@ -96,12 +97,12 @@ class BinaryExpressionTree{
             }  
         }
         bool isOperator(char object){return (object == '+' || object == '-' || object == '*' || object == '/' || object == '^' || object == '%' );}
-        float evaluator(BinaryNode<T>* currentNode){
+        double evaluator(BinaryNode<T>* currentNode){
             if(isNum(currentNode->entry)){
-                return stof(currentNode->entry);
+                return stod(currentNode->entry);
             }else{
-                float left = evaluator(currentNode->left);
-                float right = evaluator(currentNode->right);
+                double left = evaluator(currentNode->left);
+                double right = evaluator(currentNode->right);
                 char oper = currentNode->entry[0];
                 switch(oper){
                     case '+': return(left + right);
@@ -120,5 +121,5 @@ class BinaryExpressionTree{
     public:
         string equation;
         BinaryExpressionTree(string x) : equation(x) {root = new BinaryNode<T>(x); sortExpression(root);}
-        float evaluate() {return evaluator(root);}
+        double evaluate() {return evaluator(root);}
 };
