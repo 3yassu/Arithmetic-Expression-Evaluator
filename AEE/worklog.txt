@@ -1,0 +1,49 @@
+Work Log:
+
+- February 14th -
+Creation of project based on 348 Term project began.
+Started because I felt I needed more use in c++ and also the project seemed interesting
+despite how tough the workload might seem due to a whole team working on it for 348.
+Basic Binary Node completed
+
+- Februaury 15th -
+Began working on the Binary Expression Tree class to deal with the expressions with a private root value initialized and a "sortExpression" function began
+implementation did not take into might PEMDAS and was incredibly poorly designed with many syntax errors and assumptions with how specific classes functioned
+started AddExpression Fork for this.
+
+- February 16th -
+Rewrote the sortExpression code and added evaluator function in hopes of working on the many mistakes made prior.
+After realization that PEMDAS wasn't taken into account removed all of the code and created a fork for a function prefix
+that would convert infix to prefix and make that easier to convert into nodes
+
+- February  17th -
+Sorting exppression into tree changed AGAIN to be similar to the first one while taking into account PEMDAS and precedence
+to make it simpler and learning more about <string>, <vector>, and many other library headers in order to improve code.
+
+- February 18th -
+Continue working on expression tree.
+
+- February 19th -
+Time to begin testing
+
+-February 27th-
+Oops deleted all of 18th and 19th data, Project not complete, some issue with subtraction...
+
+-March 2nd-
+Fixed major issues
+
+-March 3rd-
+Went through everything and made the header file, last thing to work on should be errors
+series of debugging and finding issues gosh
+
+
+-March 8th-
+Complete Development for now, Plans to begin working on Error Checking later, 
+added support:
+	Implicit Use of powers 2^-1 = .05, 2^+2 = 4
+	Factorials 3! = 6
+	Implicit sub/add 1++1 = 2, 1-+-1 = 0
+
+
+
+
